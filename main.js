@@ -27,7 +27,8 @@ const getPokemons = async () => {
       Pokemons.push(newPoke);
     }
     RenderPoke(Pokemons[0]);
-    renderpokeFooter(Pokemons);
+    let arraysplit = Pokemons.slice(0, 4);
+    renderpokeFooter(arraysplit);
   } catch (error) {
     alert("Ocurrio un error al intentar procesar la solicitud");
   }
@@ -77,9 +78,8 @@ const main = document.querySelector(".main-container");
 const SecOtherPokes = document.getElementById("SecOtherPokes");
 
 const renderpokeFooter = (array) => {
-  let arraysplit = array.slice(0, 4);
   SecOtherPokes.innerHTML = "";
-  arraysplit.forEach((poke) => {
+  array.forEach((poke) => {
     SecOtherPokes.innerHTML += ` <figure id="${poke.id}">
           <img
             src="${poke.img}"
