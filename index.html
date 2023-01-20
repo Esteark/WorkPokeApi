@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Importamos cdn axios  -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="style.css" />
     <title>Pokedex</title>
   </head>
@@ -31,14 +33,16 @@
             <img
               src="https://static.vecteezy.com/system/resources/previews/001/188/706/original/flame-png.png"
               alt="llama"
+              class="iconPoke"
             />
           </figure>
-          <h2>CHARIZARD</h2>
+          <h2 id="namePoke">CHARIZARD</h2>
         </div>
         <figure class="image-charizard">
           <img
             src="https://www.pngmart.com/files/12/Charizard-PNG-Free-Download.png"
             alt="chaizard"
+            class="imgPoke"
           />
         </figure>
       </section>
@@ -46,38 +50,38 @@
         <div class="row-info">
           <div class="row-item">
             <span class="title-info">No.</span>
-            <span class="info-text">006</span>
+            <span class="info-text" id="idPoke">006</span>
           </div>
           <div class="row-item">
             <span class="title-info">LEVEL</span>
-            <span class="info-text">100</span>
+            <span class="info-text" id="levelPoke">100</span>
           </div>
         </div>
         <div class="row-info">
           <div class="row-item">
             <span class="title-info">TYPE</span>
-            <span class="info-text">FIRE</span>
+            <span class="info-text" id="typePoke">FIRE</span>
           </div>
           <div class="row-item">
             <span class="title-info">HABILITY</span>
-            <span class="info-text">FLAMES</span>
+            <span class="info-text" id="abilityPoke">FLAMES</span>
           </div>
         </div>
         <div class="row-info">
           <div class="row-item">
             <span class="title-info">HEIGHT</span>
-            <span class="info-text">1.7 m</span>
+            <span class="info-text" id="heightPoke">1.7 m</span>
           </div>
           <div class="row-item">
             <span class="title-info">WEIGHT</span>
-            <span class="info-text">90.5 Kg</span>
+            <span class="info-text" id="weightPoke">90.5 Kg</span>
           </div>
         </div>
       </article>
     </main>
     <footer class="footer-content">
       <h3>OTHERS</h3>
-      <div>
+      <div id="SecOtherPokes">
         <figure>
           <img
             src="https://imagenpng.com/wp-content/uploads/2017/02/007Squirtle_Pokem.png"
