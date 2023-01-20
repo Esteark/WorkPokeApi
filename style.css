@@ -83,7 +83,9 @@ body {
 }
 
 .image-charizard {
-  width: 100%;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
 }
 
 .image-charizard img {
@@ -100,12 +102,13 @@ body {
   border-radius: 15px;
   width: 40%;
   gap: 20px;
+  min-height: 50vh;
 }
 
 .row-info {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
 }
 
 .title-info {
@@ -115,6 +118,11 @@ body {
 .info-text {
   font-size: 24px;
   font-weight: bolder;
+}
+
+#typePoke,
+#abilityPoke {
+  font-size: 18px;
 }
 
 .footer-content {
@@ -172,5 +180,15 @@ body {
   #txtfilter {
     padding: 0;
     width: 150px;
+  }
+  footer h3 {
+    display: none;
+  }
+  .footer-content div {
+    justify-content: center;
+  }
+  #typePoke,
+  #abilityPoke {
+    font-size: 15px;
   }
 }
