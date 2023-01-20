@@ -25,7 +25,7 @@ body {
   display: flex;
   align-items: center;
   padding: 15px;
-  gap: 10px;
+  gap: 15px;
   border-radius: 15px 15px 0 0;
 }
 
@@ -35,6 +35,21 @@ body {
 .encabezado h2 {
   color: white;
   text-transform: uppercase;
+}
+#txtfilter {
+  background-color: #fff;
+  height: 40px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  padding: 0 30px;
+  border: 1px solid mediumorchid;
+  text-align: center;
+}
+#txtfilter:focus {
+  outline: 1px solid maroon;
 }
 
 .main-container {
@@ -153,5 +168,9 @@ body {
     width: 85%;
     height: 60vh;
     transform: translateY(-100px);
+  }
+  #txtfilter {
+    padding: 0;
+    width: 150px;
   }
 }
