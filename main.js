@@ -1,13 +1,15 @@
 //Obtenemos la informacion del pokemon
-const URL = "https://pokeapi.co/api/v2/pokemon/?limit=20";
+let offset = 0;
+let Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
 
 let Pokemons = [];
 
-const getPokemons = async () => {
+const getPokemons = async (url) => {
+  Pokemons = [];
   try {
     const {
       data: { results },
-    } = await axios.get(URL);
+    } = await axios.get(url);
     console.log(results);
     //Recorremos el array resultante con un for of
     let index = 0;
@@ -77,9 +79,8 @@ const main = document.querySelector(".main-container");
 const SecOtherPokes = document.getElementById("SecOtherPokes");
 
 const renderpokeFooter = (array) => {
-  let arraysplit = array.slice(0, 4);
   SecOtherPokes.innerHTML = "";
-  arraysplit.forEach((poke) => {
+  array.forEach((poke) => {
     SecOtherPokes.innerHTML += ` <figure id="${poke.id}">
           <img
             src="${poke.img}"
@@ -98,4 +99,32 @@ SecOtherPokes.addEventListener("click", (e) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", getPokemons);
+//Evento click del boton siguiente
+
+const btn_next = document.querySelector(".btn_next");
+const btn_prev = document.querySelector(".btn_prev");
+btn_next.addEventListener("click", () => {
+  //La paginacion (offset puede llegar como a numero maximo a 1276 si es que el limite es 4)
+  // Pero vemos evidenciado que mas o menos cuando offset llega a 800 presenta errores el GET
+  if (offset <= 800) {
+    offset += 4;
+    Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
+    getPokemons(Urlpoke);
+    console.log(Urlpoke);
+    console.log(offset);
+  }
+});
+
+btn_prev.addEventListener("click", () => {
+  if (offset > 1) {
+    offset -= 4;
+    Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
+    getPokemons(Urlpoke);
+    console.log(Urlpoke);
+    console.log(offset);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  getPokemons(Urlpoke);
+});
