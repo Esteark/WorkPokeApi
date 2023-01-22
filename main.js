@@ -2,6 +2,24 @@
 let offset = 0;
 let Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
 
+//Capturamos el modal
+
+const modalCard = document.querySelector(".modalCard");
+
+const showLoader = () => {
+  modalCard.style.display = "flex";
+  modalCard.classList.remove("animate__fadeOut");
+  modalCard.classList.add("animate__fadeIn");
+};
+
+const hideLoader = () => {
+  modalCard.classList.remove("animate__fadeIn");
+  modalCard.classList.add("animate__fadeOut");
+  setTimeout(() => {
+    modalCard.style.display = "none";
+  }, 1000);
+};
+
 const ShowAlert = (mensaje) => {
   Toastify({
     text: `${mensaje}`,
@@ -178,6 +196,7 @@ btnclear.style.visibility = "hidden";
 //Evento del boton para limpiar el filtro
 
 btnclear.addEventListener("click", async () => {
+  showLoader();
   btnclear.style.visibility = "hidden";
   PokemonsFooter = [];
   offset = 0;
@@ -188,10 +207,14 @@ btnclear.addEventListener("click", async () => {
   btn_next.style.visibility = "visible";
   btn_prev.style.visibility = "visible";
   txtfilter.value = "";
+  setTimeout(() => {
+    hideLoader();
+  }, 1000);
 });
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  showLoader();
   const txtfilter = document.getElementById("txtfilter");
   if (txtfilter.value) {
     btn_next.style.visibility = "hidden";
@@ -200,7 +223,7 @@ form.addEventListener("submit", async (e) => {
     Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=300&offset=${offset}`;
     let arraypoke = await getPokemons(Urlpoke);
     let arrayfilter = arraypoke.filter((poke) =>
-      poke.name.toLowerCase().includes(txtfilter.value.toLowerCase())
+      poke.name.toLowerCase().includes(txtfilter.value.toLowerCase().trim())
     );
     PokemonsFooter = arrayfilter.slice(0, 4);
     renderpokeFooter(PokemonsFooter);
@@ -208,10 +231,17 @@ form.addEventListener("submit", async (e) => {
   } else {
     ShowAlert("No dejes el campo de búsqueda vacío por favor");
   }
+  setTimeout(() => {
+    hideLoader();
+  }, 1000);
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  showLoader();
   let Pokemons = await getPokemons(Urlpoke);
   RenderPoke(Pokemons[0]);
   renderpokeFooter(Pokemons);
+  setTimeout(() => {
+    hideLoader();
+  }, 1000);
 });
