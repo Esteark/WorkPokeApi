@@ -241,52 +241,6 @@ form {
   background-position: center;
 }
 
-/* Comienzan estilos para el modal de carga */
-
-.modalCard {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 223, 217, 0.8968837535014006) 24%,
-    rgba(255, 232, 232, 1) 71%
-  );
-  width: 100%;
-  height: 100vh;
-  z-index: 10;
-}
-
-.modalCard .Card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  width: 220px;
-  height: 220px;
-  row-gap: 20px;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-}
-
-.modalCard .Card figure {
-  width: 60px;
-  height: 60px;
-}
-.modalCard .Card figure img {
-  width: 100%;
-  object-fit: cover;
-}
-
-.modalCard .Card h3 {
-  font-size: 16px;
-}
-
 @media (max-width: 767.98px) {
   .encabezado {
     justify-content: center;
