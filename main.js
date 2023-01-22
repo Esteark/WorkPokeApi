@@ -37,13 +37,10 @@ const getPokemons = async (url) => {
       };
       Pokemons.push(newPoke);
     }
-<<<<<<< HEAD
     RenderPoke(Pokemons[0]);
     let arraysplit = Pokemons.slice(0, 4);
     renderpokeFooter(arraysplit);
-=======
     return Pokemons;
->>>>>>> esteban
   } catch (error) {
     alert("Ocurrio un error al intentar procesar la solicitud");
   }
