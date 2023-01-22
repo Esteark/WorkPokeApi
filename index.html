@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Importamos cdn axios  -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Importamos los estilos de toastify -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <!-- Importamos el script de toastify  -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <link rel="stylesheet" href="style.css" />
     <title>Pokedex</title>
   </head>
@@ -24,7 +39,11 @@
         />
       </figure>
       <h2>Pokédex</h2>
-      <input type="text" placeholder="nombre del pokemon" id="txtfilter" />
+      <form>
+        <input type="text" placeholder="nombre del pokemon" id="txtfilter" />
+        <button type="submit" id="btnFiltro">Buscar</button>
+      </form>
+      <button id="btnclear">🗑️</button>
     </header>
     <main class="main-container">
       <section class="charizard-container">
@@ -42,7 +61,7 @@
           <img
             src="https://www.pngmart.com/files/12/Charizard-PNG-Free-Download.png"
             alt="chaizard"
-            class="imgPoke"
+            class="imgPoke animate__animated"
           />
         </figure>
       </section>
@@ -81,8 +100,8 @@
     </main>
     <footer class="footer-content">
       <h3>OTHERS</h3>
-      <figure><div class="btn_prev"></div></figure>
-      <div id="SecOtherPokes">
+      <figure class="btn_prev"></figure>
+      <div id="SecOtherPokes" class="animate__animated">
         <figure>
           <img
             src="https://imagenpng.com/wp-content/uploads/2017/02/007Squirtle_Pokem.png"
@@ -105,7 +124,7 @@
           <img src="" alt="pokemon" />
         </figure>
       </div>
-      <figure><div class="btn_next"></div></figure>
+      <figure class="btn_next"></figure>
     </footer>
 
     <script src="main.js" type="text/javascript"></script>
