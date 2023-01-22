@@ -2,22 +2,23 @@
 let offset = 0;
 let Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
 
-const SecCard = document.querySelector(".SecCard");
+//Capturamos el modal
+
+const modalCard = document.querySelector(".SecCard");
 
 const showLoader = () => {
-  SecCard.style.display = "flex";
-  SecCard.classList.remove("animate__fadeOut");
-  SecCard.classList.add("animate__fadeIn");
-};
-const hideLoader = () => {
-  SecCard.classList.remove("animate__fadeIn");
-  SecCard.classList.add("animate__fadeOut");
-  setTimeout(() => {
-    SecCard.style.display = "none";
-  }, 1000);
+  modalCard.style.display = "flex";
+  modalCard.classList.remove("animate__fadeOut");
+  modalCard.classList.add("animate__fadeIn");
 };
 
-showLoader();
+const hideLoader = () => {
+  modalCard.classList.remove("animate__fadeIn");
+  modalCard.classList.add("animate__fadeOut");
+  setTimeout(() => {
+    modalCard.style.display = "none";
+  }, 1000);
+};
 
 const ShowAlert = (mensaje) => {
   Toastify({
@@ -127,8 +128,14 @@ const renderpokeFooter = (array) => {
         </figure>`;
     });
   } else {
-    SecOtherPokes.innerHTML +=
-      "<h2>No encontramos ningún pokemon con el filtro usado</h2>";
+    SecOtherPokes.innerHTML += ` <figure id="-1">
+          <img
+            src="./img/question.png"
+            alt="pokemon"
+            id="-1"
+          />
+        </figure>`;
+    ShowAlert("No encontramos ningún pokemon con el filtro usado");
   }
 };
 
@@ -137,14 +144,29 @@ let PokemonsFooter = [];
 //Evento Click en la seccion footer
 SecOtherPokes.addEventListener("click", async (e) => {
   if (e.target.localName == "img" || e.target.localName == "figure") {
-    console.log(Urlpoke);
-    if (PokemonsFooter.length == 0) {
-      let arrayPoke = await getPokemons(Urlpoke);
-      let arrayfiltro = arrayPoke.filter((poke) => poke.id == e.target.id);
-      RenderPoke(arrayfiltro[0]);
+    if (e.target.id != -1) {
+      if (PokemonsFooter.length == 0) {
+        let arrayPoke = await getPokemons(Urlpoke);
+        let arrayfiltro = arrayPoke.filter((poke) => poke.id == e.target.id);
+        RenderPoke(arrayfiltro[0]);
+      } else {
+        let arrayfiltro = PokemonsFooter.filter(
+          (poke) => poke.id == e.target.id
+        );
+        RenderPoke(arrayfiltro[0]);
+      }
     } else {
-      let arrayfiltro = PokemonsFooter.filter((poke) => poke.id == e.target.id);
-      RenderPoke(arrayfiltro[0]);
+      RenderPoke({
+        name: "Pokemon no encontrado",
+        icon: "./img/question.png",
+        img: "./img/poke.png",
+        id: "?",
+        level: "???",
+        type: [{ type: { name: "???" } }],
+        ability: [{ ability: { name: "???" } }],
+        height: "???",
+        weight: "????",
+      });
     }
     animationImg();
   }
@@ -208,11 +230,12 @@ btnclear.addEventListener("click", async () => {
   txtfilter.value = "";
   setTimeout(() => {
     hideLoader();
-  }, 2000);
+  }, 1000);
 });
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const txtfilter = document.getElementById("txtfilter");
   if (txtfilter.value) {
     showLoader();
@@ -222,24 +245,25 @@ form.addEventListener("submit", async (e) => {
     Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=300&offset=${offset}`;
     let arraypoke = await getPokemons(Urlpoke);
     let arrayfilter = arraypoke.filter((poke) =>
-      poke.name.toLowerCase().includes(txtfilter.value.toLowerCase())
+      poke.name.toLowerCase().includes(txtfilter.value.toLowerCase().trim())
     );
     PokemonsFooter = arrayfilter.slice(0, 4);
     renderpokeFooter(PokemonsFooter);
     btnclear.style.visibility = "visible";
-    setTimeout(() => {
-      hideLoader();
-    }, 2000);
   } else {
     ShowAlert("No dejes el campo de búsqueda vacío por favor");
   }
+  setTimeout(() => {
+    hideLoader();
+  }, 1000);
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  showLoader();
   let Pokemons = await getPokemons(Urlpoke);
   RenderPoke(Pokemons[0]);
   renderpokeFooter(Pokemons);
   setTimeout(() => {
     hideLoader();
-  }, 2000);
+  }, 1000);
 });
