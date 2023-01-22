@@ -2,10 +2,19 @@
 let offset = 0;
 let Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
 
-let Pokemons = [];
+const ShowAlert = (mensaje) => {
+  Toastify({
+    text: `${mensaje}`,
+    duration: 3000,
+    style: {
+      background: "linear-gradient(to right, #e93515, #e99809)",
+    },
+    onClick: function () {}, // Callback after click
+  }).showToast();
+};
 
 const getPokemons = async (url) => {
-  Pokemons = [];
+  let Pokemons = [];
   try {
     const {
       data: { results },
@@ -28,8 +37,7 @@ const getPokemons = async (url) => {
       };
       Pokemons.push(newPoke);
     }
-    RenderPoke(Pokemons[0]);
-    renderpokeFooter(Pokemons);
+    return Pokemons;
   } catch (error) {
     alert("Ocurrio un error al intentar procesar la solicitud");
   }
@@ -77,25 +85,48 @@ const renderabilitiesPoke = (arrayabi) => {
 //Capturamos el main para poderlo manipular
 const main = document.querySelector(".main-container");
 const SecOtherPokes = document.getElementById("SecOtherPokes");
+const imgPoke = document.querySelector(".imgPoke");
+
+const animationImg = () => {
+  imgPoke.classList.add("animate__tada");
+  setTimeout(() => {
+    imgPoke.classList.remove("animate__tada");
+  }, 600);
+};
 
 const renderpokeFooter = (array) => {
   SecOtherPokes.innerHTML = "";
-  array.forEach((poke) => {
-    SecOtherPokes.innerHTML += ` <figure id="${poke.id}">
+  if (array.length != 0) {
+    array.forEach((poke) => {
+      SecOtherPokes.innerHTML += ` <figure id="${poke.id}">
           <img
             src="${poke.img}"
             alt="pokemon"
             id="${poke.id}"
           />
         </figure>`;
-  });
+    });
+  } else {
+    SecOtherPokes.innerHTML +=
+      "<h2>No encontramos ningún pokemon con el filtro usado</h2>";
+  }
 };
 
+let PokemonsFooter = [];
+
 //Evento Click en la seccion footer
-SecOtherPokes.addEventListener("click", (e) => {
+SecOtherPokes.addEventListener("click", async (e) => {
   if (e.target.localName == "img" || e.target.localName == "figure") {
-    let arrayfiltro = Pokemons.filter((pokemon) => pokemon.id == e.target.id);
-    RenderPoke(arrayfiltro[0]);
+    console.log(Urlpoke);
+    if (PokemonsFooter.length == 0) {
+      let arrayPoke = await getPokemons(Urlpoke);
+      let arrayfiltro = arrayPoke.filter((poke) => poke.id == e.target.id);
+      RenderPoke(arrayfiltro[0]);
+    } else {
+      let arrayfiltro = PokemonsFooter.filter((poke) => poke.id == e.target.id);
+      RenderPoke(arrayfiltro[0]);
+    }
+    animationImg();
   }
 });
 
@@ -103,28 +134,81 @@ SecOtherPokes.addEventListener("click", (e) => {
 
 const btn_next = document.querySelector(".btn_next");
 const btn_prev = document.querySelector(".btn_prev");
-btn_next.addEventListener("click", () => {
+btn_next.addEventListener("click", async () => {
   //La paginacion (offset puede llegar como a numero maximo a 1276 si es que el limite es 4)
   // Pero vemos evidenciado que mas o menos cuando offset llega a 800 presenta errores el GET
   if (offset <= 800) {
     offset += 4;
     Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
-    getPokemons(Urlpoke);
-    console.log(Urlpoke);
-    console.log(offset);
+    let arrayPoke = await getPokemons(Urlpoke);
+    RenderPoke(arrayPoke[0]);
+    renderpokeFooter(arrayPoke);
+    animationImg();
+
+    SecOtherPokes.classList.add("animate__fadeIn");
   }
+  setTimeout(() => {
+    SecOtherPokes.classList.remove("animate__fadeIn");
+  }, 500);
 });
 
-btn_prev.addEventListener("click", () => {
+btn_prev.addEventListener("click", async () => {
   if (offset > 1) {
     offset -= 4;
     Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
-    getPokemons(Urlpoke);
-    console.log(Urlpoke);
-    console.log(offset);
+    let arrayPoke = await getPokemons(Urlpoke);
+    RenderPoke(arrayPoke[0]);
+    renderpokeFooter(arrayPoke);
+    animationImg();
+    SecOtherPokes.classList.add("animate__fadeIn");
+  }
+  setTimeout(() => {
+    SecOtherPokes.classList.remove("animate__fadeIn");
+  }, 500);
+});
+
+//Evento click del boton para filtrar pokemones
+const form = document.querySelector("form");
+const btnclear = document.getElementById("btnclear");
+btnclear.style.visibility = "hidden";
+
+//Evento del boton para limpiar el filtro
+
+btnclear.addEventListener("click", async () => {
+  btnclear.style.visibility = "hidden";
+  PokemonsFooter = [];
+  offset = 0;
+  Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
+  let arrayPoke = await getPokemons(Urlpoke);
+  RenderPoke(arrayPoke[0]);
+  renderpokeFooter(arrayPoke);
+  btn_next.style.visibility = "visible";
+  btn_prev.style.visibility = "visible";
+  txtfilter.value = "";
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const txtfilter = document.getElementById("txtfilter");
+  if (txtfilter.value) {
+    btn_next.style.visibility = "hidden";
+    btn_prev.style.visibility = "hidden";
+    offset = 0;
+    Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=300&offset=${offset}`;
+    let arraypoke = await getPokemons(Urlpoke);
+    let arrayfilter = arraypoke.filter((poke) =>
+      poke.name.toLowerCase().includes(txtfilter.value.toLowerCase())
+    );
+    PokemonsFooter = arrayfilter.slice(0, 4);
+    renderpokeFooter(PokemonsFooter);
+    btnclear.style.visibility = "visible";
+  } else {
+    ShowAlert("No dejes el campo de búsqueda vacío por favor");
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  getPokemons(Urlpoke);
+document.addEventListener("DOMContentLoaded", async () => {
+  let Pokemons = await getPokemons(Urlpoke);
+  RenderPoke(Pokemons[0]);
+  renderpokeFooter(Pokemons);
 });
