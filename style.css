@@ -243,7 +243,7 @@ form {
 
 /* estilos para el modal de carga  */
 
-.SecCard {
+.modalCard {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -257,7 +257,7 @@ form {
   position: fixed;
 }
 
-.SecCard .Card {
+.modalCard .Card {
   width: 220px;
   height: 220px;
   background-color: #fff;
@@ -273,12 +273,12 @@ form {
   gap: 10px;
 }
 
-.SecCard .Card figure {
+.modalCard .Card figure {
   width: 60px;
   height: 60px;
 }
 
-.SecCard .Card figure img {
+.modalCard .Card figure img {
   width: 100%;
   object-fit: cover;
 }

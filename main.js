@@ -4,7 +4,7 @@ let Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
 
 //Capturamos el modal
 
-const modalCard = document.querySelector(".SecCard");
+const modalCard = document.querySelector(".modalCard");
 
 const showLoader = () => {
   modalCard.style.display = "flex";
