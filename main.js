@@ -128,8 +128,14 @@ const renderpokeFooter = (array) => {
         </figure>`;
     });
   } else {
-    SecOtherPokes.innerHTML +=
-      "<h2>No encontramos ningún pokemon con el filtro usado</h2>";
+    SecOtherPokes.innerHTML += ` <figure id="-1">
+          <img
+            src="./img/question.png"
+            alt="pokemon"
+            id="-1"
+          />
+        </figure>`;
+    ShowAlert("No encontramos ningún pokemon con el filtro usado");
   }
 };
 
@@ -138,14 +144,29 @@ let PokemonsFooter = [];
 //Evento Click en la seccion footer
 SecOtherPokes.addEventListener("click", async (e) => {
   if (e.target.localName == "img" || e.target.localName == "figure") {
-    console.log(Urlpoke);
-    if (PokemonsFooter.length == 0) {
-      let arrayPoke = await getPokemons(Urlpoke);
-      let arrayfiltro = arrayPoke.filter((poke) => poke.id == e.target.id);
-      RenderPoke(arrayfiltro[0]);
+    if (e.target.id != -1) {
+      if (PokemonsFooter.length == 0) {
+        let arrayPoke = await getPokemons(Urlpoke);
+        let arrayfiltro = arrayPoke.filter((poke) => poke.id == e.target.id);
+        RenderPoke(arrayfiltro[0]);
+      } else {
+        let arrayfiltro = PokemonsFooter.filter(
+          (poke) => poke.id == e.target.id
+        );
+        RenderPoke(arrayfiltro[0]);
+      }
     } else {
-      let arrayfiltro = PokemonsFooter.filter((poke) => poke.id == e.target.id);
-      RenderPoke(arrayfiltro[0]);
+      RenderPoke({
+        name: "Pokemon no encontrado",
+        icon: "./img/question.png",
+        img: "./img/poke.png",
+        id: "?",
+        level: "???",
+        type: [{ type: { name: "???" } }],
+        ability: [{ ability: { name: "???" } }],
+        height: "???",
+        weight: "????",
+      });
     }
     animationImg();
   }
@@ -214,9 +235,10 @@ btnclear.addEventListener("click", async () => {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  showLoader();
+
   const txtfilter = document.getElementById("txtfilter");
   if (txtfilter.value) {
+    showLoader();
     btn_next.style.visibility = "hidden";
     btn_prev.style.visibility = "hidden";
     offset = 0;
