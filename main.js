@@ -2,6 +2,23 @@
 let offset = 0;
 let Urlpoke = `https://pokeapi.co/api/v2/pokemon/?limit=4&offset=${offset}`;
 
+const SecCard = document.querySelector(".SecCard");
+
+const showLoader = () => {
+  SecCard.style.display = "flex";
+  SecCard.classList.remove("animate__fadeOut");
+  SecCard.classList.add("animate__fadeIn");
+};
+const hideLoader = () => {
+  SecCard.classList.remove("animate__fadeIn");
+  SecCard.classList.add("animate__fadeOut");
+  setTimeout(() => {
+    SecCard.style.display = "none";
+  }, 1000);
+};
+
+showLoader();
+
 const ShowAlert = (mensaje) => {
   Toastify({
     text: `${mensaje}`,
@@ -175,6 +192,7 @@ btnclear.style.visibility = "hidden";
 //Evento del boton para limpiar el filtro
 
 btnclear.addEventListener("click", async () => {
+  showLoader();
   btnclear.style.visibility = "hidden";
   PokemonsFooter = [];
   offset = 0;
@@ -185,12 +203,16 @@ btnclear.addEventListener("click", async () => {
   btn_next.style.visibility = "visible";
   btn_prev.style.visibility = "visible";
   txtfilter.value = "";
+  setTimeout(() => {
+    hideLoader();
+  }, 2000);
 });
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const txtfilter = document.getElementById("txtfilter");
   if (txtfilter.value) {
+    showLoader();
     btn_next.style.visibility = "hidden";
     btn_prev.style.visibility = "hidden";
     offset = 0;
@@ -202,6 +224,9 @@ form.addEventListener("submit", async (e) => {
     PokemonsFooter = arrayfilter.slice(0, 4);
     renderpokeFooter(PokemonsFooter);
     btnclear.style.visibility = "visible";
+    setTimeout(() => {
+      hideLoader();
+    }, 2000);
   } else {
     ShowAlert("No dejes el campo de búsqueda vacío por favor");
   }
@@ -211,4 +236,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let Pokemons = await getPokemons(Urlpoke);
   RenderPoke(Pokemons[0]);
   renderpokeFooter(Pokemons);
+  setTimeout(() => {
+    hideLoader();
+  }, 2000);
 });
