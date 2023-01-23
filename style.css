@@ -255,6 +255,7 @@ form {
     rgba(255, 232, 232, 1) 71%
   );
   position: fixed;
+  z-index:10;
 }
 
 .modalCard .Card {
